@@ -1,17 +1,6 @@
 # 使用基础镜像
 FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
 
-# # 安装必要的工具和 locales 包
-# RUN apt-get update && \
-#     apt-get install -y locales
-
-# # 生成 en_US.UTF-8 locale
-# RUN locale-gen en_US.UTF-8
-
-# # 设置环境变量
-# ENV LANG=en_US.UTF-8 \
-#     LANGUAGE=en_US:en \
-#     LC_ALL=en_US.UTF-8
 # 设置非交互式模式
 ENV DEBIAN_FRONTEND=noninteractive
 
