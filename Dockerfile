@@ -122,6 +122,7 @@ RUN mkdir -p ~/miniconda3 && \
 # 激活 Conda 环境 清理 Conda 缓存
 RUN /bin/bash -c "source ~/miniconda3/bin/activate && \
     conda init --all && \
+    pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple && \
     conda clean --all -y && \
     conda clean -a"
 
