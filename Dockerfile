@@ -122,9 +122,21 @@ RUN mkdir -p ~/miniconda3 && \
 # 激活 Conda 环境 清理 Conda 缓存
 RUN /bin/bash -c "source ~/miniconda3/bin/activate && \
     conda init --all && \
-    conda config --set auto_activate_base false && \
     conda clean --all -y && \
     conda clean -a"
+
+# 配置 Conda 清华源
+RUN echo "channels:" > ~/.condarc && \
+    echo "  - defaults" >> ~/.condarc && \
+    echo "show_channel_urls: true" >> ~/.condarc && \
+    echo "default_channels:" >> ~/.condarc && \
+    echo "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main" >> ~/.condarc && \
+    echo "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r" >> ~/.condarc && \
+    echo "  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2" >> ~/.condarc && \
+    echo "custom_channels:" >> ~/.condarc && \
+    echo "  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud" >> ~/.condarc && \
+    echo "  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud" >> ~/.condarc && \
+    echo "auto_activate_base: false" >> ~/.condarc
 
 # 复制当前文件夹下的 .mujoco 文件夹到容器内的 /root/.mujoco
 COPY scripts/.mujoco /root/.mujoco
