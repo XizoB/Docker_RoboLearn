@@ -8,6 +8,10 @@
 ```
 
 # 运行步骤
+## 为了保证docker制作成功，最好先在本地下载好基础镜像
+```
+docker pull nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+```
 
 ## 给bash文件添加可执行权限
 
