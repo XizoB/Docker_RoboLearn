@@ -28,6 +28,11 @@ sudo chmod +x ./touch_xauth_robolearn_22.sh
 docker build -t xizobu/robolearn_22:base .
 ```
 
+- 其中参数--progress=plain表示详细显示build细节，参数> build.log 2>&1把日志保存入build.log 中
+```
+docker build --progress=plain -t xizobu/robolearn_22:base . > build.log 2>&1
+```
+
 ## 运行镜像
 
 - 其中参数base是镜像的tag

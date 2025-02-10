@@ -1,5 +1,7 @@
 # 使用带有CUDA和cuDNN的NVIDIA基础镜像
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+# FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+# 使用带有opengl的基础镜像
+FROM nvidia/opengl:1.0-glvnd-devel-ubuntu22.04
 
 # 设置非交互式环境防止安装提示
 ENV DEBIAN_FRONTEND=noninteractive
@@ -44,14 +46,15 @@ RUN apt-get install -yq \
     netcat \
     openssh-server \
     iputils-ping \
+    gnupg2 \ 
+    lsb-release \
+    dpkg \
     ### 开发工具链 ###
     build-essential \
+    ca-certificates \
     cmake \
     clang-14 \
-    clang \
     llvm-14 \
-    llvm-14-dev \
-    llvm-14-tools \
     gcc \
     g++ \
     mold \
@@ -69,17 +72,30 @@ RUN apt-get install -yq \
 
 
 ##############################################
-# 开发库依赖 (按功能分类)
+# cuda-toolkit-12-1
+##############################################
+# 下载并安装 NVIDIA CUDA GPG 密钥
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb \
+    && dpkg -i cuda-keyring_1.0-1_all.deb \
+    && rm -f cuda-keyring_1.0-1_all.deb
+# 更新 apt 缓存并安装 CUDA 12.1 工具包
+RUN apt-get update && apt-get install -y \
+    cuda-toolkit-12-1
+# 设置环境变量
+ENV PATH=/usr/local/cuda-12.1/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH
+
+
+##############################################
+# 开发库依赖
 ##############################################
 RUN apt-get install -yq \
     ### 基础开发库 ###
-    ca-certificates \
     libreadline-dev \
     libsqlite3-dev \
     libssl-dev \
     libbz2-dev \
     liblzma-dev \
-    lzma \
     libncurses5-dev \
     libgmp-dev \
     libedit-dev \
@@ -99,20 +115,13 @@ RUN apt-get install -yq \
     libboost-test-dev \
     libboost-thread-dev \
     ### 图形相关 ###
-    libgl1 \
-    libglu1 \
     libglu1-mesa-dev \
-    libglfw3 \
+    libglfw3-dev \ 
     libglew-dev \
-    libegl1 \
     ### X11开发依赖 ###
-    libx11-xcb-dev \
-    libxcb-* \
     libxrandr-dev \
     libxinerama1 \
     libxcursor1 \
-    libxi6 \
-    libxrandr2 \
     '^libxcb.*-dev' \
     libx11-xcb-dev \
     libxrender-dev \
