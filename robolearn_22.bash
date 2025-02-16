@@ -143,7 +143,8 @@ fi
 ## GUI
 if [[ "${ENABLE_GUI,,}" = true ]]; then
     # To enable GUI, make sure processes in the container can connect to the x server
-    XAUTH="${TMPDIR:-"/tmp"}/xauth_docker_${REPOSITORY_NAME}"
+    # XAUTH="${TMPDIR:-"/tmp"}/xauth_docker_${REPOSITORY_NAME}"
+    XAUTH=~/xauth_docker_${REPOSITORY_NAME}
     touch "${XAUTH}"
     chmod a+r "${XAUTH}"
     XAUTH_LIST=$(xauth nlist "${DISPLAY}")
